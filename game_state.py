@@ -5,11 +5,11 @@ class GameState:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.player_position = (random.randint(0, width), random.randint(0, height))
-        self.loot_position = (random.randint(0, width), random.randint(0, height))
+        self.player_position = (random.randint(0, width - 1), random.randint(0, height - 1))
+        self.loot_position = (random.randint(0, width - 1), random.randint(0, height - 1))
         # recalculate loot pos while it's the same as player pos
         while self.player_position == self.loot_position:
-            self.loot_position = (random.randint(0, width), random.randint(0, height))
+            self.loot_position = (random.randint(0, width - 1), random.randint(0, height - 1))
 
     def move_right(self):
         if self.player_position[0] < self.width - 1:
