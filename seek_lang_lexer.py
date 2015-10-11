@@ -31,6 +31,11 @@ token_expressions = [
     (r'for',                   RESERVED),  # For
     (r'do',                    RESERVED),  # For/if x do
     (r'end',                   RESERVED),  # For/if end keyword
+    (r'up',                    RESERVED),  # Move up keyword
+    (r'down',                  RESERVED),  # Move down keyword
+    (r'left',                  RESERVED),  # Move left keyword
+    (r'right',                 RESERVED),  # Move right keyword
+    (r'movement_list',         RESERVED),  # Reserved keyword for internal usage
     (r'[0-9]+',                INT),  # Integers
     (r'[A-Za-z][A-Za-z0-9_]*', ID),  # Identifiers
 ]

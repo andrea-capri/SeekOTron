@@ -6,8 +6,10 @@ class Equality:
     def __ne__(self, other):
         return not self.__eq__(other)
 
+
 class Aexp(Equality):
     pass
+
 
 class IntAexp(Aexp):
     def __init__(self, i):
@@ -18,6 +20,7 @@ class IntAexp(Aexp):
 
     def eval(self, env):
         return self.i
+
 
 class VarAexp(Aexp):
     def __init__(self, name):
@@ -31,6 +34,7 @@ class VarAexp(Aexp):
             return env[self.name]
         else:
             return 0
+
 
 class BinopAexp(Aexp):
     def __init__(self, op, left, right):
@@ -56,8 +60,10 @@ class BinopAexp(Aexp):
             raise RuntimeError('unknown operator: ' + self.op)
         return value
 
+
 class Bexp(Equality):
     pass
+
 
 class RelopBexp(Bexp):
     def __init__(self, op, left, right):
@@ -87,6 +93,7 @@ class RelopBexp(Bexp):
             raise RuntimeError('unknown operator: ' + self.op)
         return value
 
+
 class AndBexp(Bexp):
     def __init__(self, left, right):
         self.left = left
@@ -99,6 +106,7 @@ class AndBexp(Bexp):
         left_value = self.left.eval(env)
         right_value = self.right.eval(env)
         return left_value and right_value
+
 
 class OrBexp(Bexp):
     def __init__(self, left, right):
@@ -113,6 +121,7 @@ class OrBexp(Bexp):
         right_value = self.right.eval(env)
         return left_value or right_value
 
+
 class NotBexp(Bexp):
     def __init__(self, exp):
         self.exp = exp
@@ -124,8 +133,10 @@ class NotBexp(Bexp):
         value = self.exp.eval(env)
         return not value
 
+
 class Statement(Equality):
     pass
+
 
 class AssignStatement(Statement):
     def __init__(self, name, aexp):
@@ -139,6 +150,7 @@ class AssignStatement(Statement):
         value = self.aexp.eval(env)
         env[self.name] = value
 
+
 class CompoundStatement(Statement):
     def __init__(self, first, second):
         self.first = first
@@ -150,6 +162,7 @@ class CompoundStatement(Statement):
     def eval(self, env):
         self.first.eval(env)
         self.second.eval(env)
+
 
 class IfStatement(Statement):
     def __init__(self, condition, true_stmt, false_stmt):
@@ -168,6 +181,7 @@ class IfStatement(Statement):
             if self.false_stmt:
                 self.false_stmt.eval(env)
 
+
 class ForStatement(Statement):
     def __init__(self, iterations, body):
         self.iterations = iterations
@@ -181,4 +195,19 @@ class ForStatement(Statement):
         while iterations_left > 0:
             self.body.eval(env)
             iterations_left -= 1
+
+
+class MoveStatement(Statement):
+    def __init__(self, direction):
+        self.direction = direction
+
+    def __repr__(self):
+        return 'MoveStatement(%s)' % (self.direction)
+
+    def eval(self, env):
+        if 'movement_list' not in env:
+            env['movement_list'] = [self.direction]
+        else:
+            env['movement_list'].append(self.direction)
+        print("Evaluating " + self.direction)
 

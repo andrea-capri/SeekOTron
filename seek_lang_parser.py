@@ -90,7 +90,8 @@ def process_logic(op):
 def stmt():
     return assign_stmt() | \
            if_stmt()     | \
-           for_stmt()
+           for_stmt()    | \
+           move_stmt()
 
 def assign_stmt():
     def process(parsed):
@@ -122,6 +123,12 @@ def for_stmt():
     return keyword('for') + aexp() + \
            keyword('do') + Lazy(stmt_list) + \
            keyword('end') ^ process
+
+def move_stmt():
+    def process(parsed):
+        direction = parsed
+        return MoveStatement(direction)
+    return (keyword('up') | keyword('down') | keyword('left') | keyword('right')) ^ process
 
 def parser():
     return Phrase(stmt_list())
