@@ -100,7 +100,10 @@ def assign_stmt():
     return id + keyword('=') + aexp() ^ process
 
 def stmt_list():
-    separator = keyword(';') ^ (lambda x: lambda l, r: CompoundStatement(l, r))
+    separator = ((keyword(';') + keyword('\n')) |
+                 keyword(';') |
+                 keyword('\n')) ^ \
+                (lambda x: lambda l, r: CompoundStatement(l, r))
     return Exp(stmt(), separator)
 
 def if_stmt():

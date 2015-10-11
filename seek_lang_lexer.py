@@ -8,7 +8,8 @@ ID = "ID"
 
 
 token_expressions = [
-    (r'[ \t\n]+',              None),  # Whitespace
+    (r'[ \t]+',                None),  # Whitespace
+    (r'\n',                    RESERVED),  # New line
     (r'\(',                    RESERVED),  # Left bracket
     (r'\)',                    RESERVED),  # Right bracket
     (r'\+',                    RESERVED),  # Addition operator
@@ -23,6 +24,10 @@ token_expressions = [
     (r'==',                    RESERVED),  # Equality operator
     (r'!=',                    RESERVED),  # Not equal operator
     (r'=',                     RESERVED),  # Assignment operator
+    (r'up',                    RESERVED),  # Move up keyword
+    (r'down',                  RESERVED),  # Move down keyword
+    (r'left',                  RESERVED),  # Move left keyword
+    (r'right',                 RESERVED),  # Move right keyword
     (r'and',                   RESERVED),  # Logical and
     (r'or',                    RESERVED),  # Logical for
     (r'not',                   RESERVED),  # Negation
@@ -31,10 +36,6 @@ token_expressions = [
     (r'for',                   RESERVED),  # For
     (r'do',                    RESERVED),  # For/if x do
     (r'end',                   RESERVED),  # For/if end keyword
-    (r'up',                    RESERVED),  # Move up keyword
-    (r'down',                  RESERVED),  # Move down keyword
-    (r'left',                  RESERVED),  # Move left keyword
-    (r'right',                 RESERVED),  # Move right keyword
     (r'movement_list',         RESERVED),  # Reserved keyword for internal usage
     (r'[0-9]+',                INT),  # Integers
     (r'[A-Za-z][A-Za-z0-9_]*', ID),  # Identifiers
