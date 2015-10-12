@@ -13,9 +13,13 @@ class SeekOTron:
     def __init__(self):
         self.game_state = game_state.GameState(self.BOARD_WIDTH, self.BOARD_HEIGHT)
         self.window = pyglet.window.Window(resizable=True)
-        self.key_input_enabled = False
+        self.arrow_input_enabled = False  # Are keyboard arrow inputs being accepted
+        self.buffered_moves_made = 0  # The number of moves made from the current buffer
+        self.buffered_moves = []  # The movements buffered for the robot
+        self.processing_moves = False  # Is the game currently processing movement
         self.loot_image = pyglet.image.load('img/loot.png')
         self.robot_image = pyglet.image.load('img/robot.png')
+        self.moving_banner_image = pyglet.image.load('img/moving_text.png')
         self.win_banner_image = pyglet.image.load('img/win_text.png')
 
         @self.window.event
@@ -24,6 +28,8 @@ class SeekOTron:
             self.draw_grid()
             self.draw_loot()
             self.draw_robot()
+            if self.processing_moves:
+                self.draw_moving_banner()
             if self.game_state.is_won():
                 self.draw_win_banner()
 
@@ -31,24 +37,31 @@ class SeekOTron:
         def on_key_press(symbol, modifiers):
             self.handle_keys(symbol)
 
+    def update(self, dt):
+        self.process_move()
+
     def handle_keys(self, symbol):
         if self.game_state.is_won():
+            # If on win screen, start new game on any key
             self.game_state = game_state.GameState(self.BOARD_WIDTH, self.BOARD_HEIGHT)
         elif symbol == pyglet.window.key.Q:
             exit()
+        elif self.processing_moves:
+            # Don't accept keyboard input while processing movement
+            return
         elif symbol == pyglet.window.key.SPACE:
-            self.process_movement()
+            self.process_instructions()
         elif symbol == pyglet.window.key.K:
-            self.key_input_enabled = not self.key_input_enabled
-            if self.key_input_enabled:
-                print("Hey, I'm now listening for keyboard input")
+            self.arrow_input_enabled = not self.arrow_input_enabled
+            if self.arrow_input_enabled:
+                print("Hey, I'm now listening for arrow input")
             else:
-                print("Hey, I'm no longer listening for keyboard input")
+                print("Hey, I'm no longer listening for arrow input")
         elif symbol == pyglet.window.key.D:
             print("Debug output follows...")
             print("Player location: " + str(self.game_state.player_position))
             print("Loot location: " + str(self.game_state.loot_position))
-        elif self.key_input_enabled:
+        elif self.arrow_input_enabled:
             if symbol == pyglet.window.key.RIGHT:
                 self.game_state.move_right()
             elif symbol == pyglet.window.key.LEFT:
@@ -58,24 +71,14 @@ class SeekOTron:
             elif symbol == pyglet.window.key.DOWN:
                 self.game_state.move_down()
 
-    def process_movement(self):
+    def process_instructions(self):
         moves = seek_lang.driver.evaluate_seek_lang(self.game_state.player_position, self.game_state.loot_position)
+        self.buffered_moves_made = 0
         if not moves:  # fail if unable to parse
-            return
-        i = 0
-        for move in moves:
-            if move == "right":
-                self.game_state.move_right()
-            elif move == "left":
-                self.game_state.move_left()
-            elif move == "up":
-                self.game_state.move_up()
-            elif move == "down":
-                self.game_state.move_down()
-            i += 1
-            if i > self.MAX_MOVES:
-                print("Max moves (" + str(self.MAX_MOVES) + ") reached, stopping!")
-                break
+            self.buffered_moves = []
+        else:
+            self.processing_moves = True
+            self.buffered_moves = moves
 
     def draw_grid(self):
         # Draw horizontal lines
@@ -142,6 +145,24 @@ class SeekOTron:
         # Draw it
         sprite.draw()
 
+    def draw_moving_banner(self):
+        sprite = pyglet.sprite.Sprite(self.moving_banner_image)
+        # Scale sprite
+        banner_aspect_ratio = self.win_banner_image.width / self.win_banner_image.height
+        window_aspect = self.window.get_size()[0] / self.window.get_size()[1]
+        if window_aspect > banner_aspect_ratio:  # window is relatively wider, scale based on window height
+            scaling_coeff = self.window.get_size()[1] / sprite.height
+        else:  # window is relatively taller, scale based on window width
+            scaling_coeff = self.window.get_size()[0] / sprite.width
+        sprite.scale = scaling_coeff - 0.01  # scale just a little smaller so image always fits
+        # Position sprite
+        sprite_horizontal_buffer = (self.window.get_size()[0] - sprite.width) // 2
+        sprite.x = sprite_horizontal_buffer
+        sprite_vertical_buffer = (self.window.get_size()[1] - sprite.height) // 2
+        sprite.y = sprite_vertical_buffer
+        # Draw it
+        sprite.draw()
+
     def draw_win_banner(self):
         sprite = pyglet.sprite.Sprite(self.win_banner_image)
         # Scale sprite
@@ -160,7 +181,32 @@ class SeekOTron:
         # Draw it
         sprite.draw()
 
+    def process_move(self):
+        if len(self.buffered_moves) == 0:
+            self.processing_moves = False
+            return
+        move = self.buffered_moves.pop()
+        if move == "right":
+            self.game_state.move_right()
+        elif move == "left":
+            self.game_state.move_left()
+        elif move == "up":
+            self.game_state.move_up()
+        elif move == "down":
+            self.game_state.move_down()
+        self.buffered_moves_made += 1
+        if self.game_state.is_won():
+            self.stop_processing_moves()
+        elif self.buffered_moves_made > self.MAX_MOVES:
+            print("Max moves (" + str(self.MAX_MOVES) + ") reached, stopping!")
+            self.stop_processing_moves()
+
+    def stop_processing_moves(self):
+        self.buffered_moves = []
+        self.processing_moves = False
+
     def game_loop(self):
+        pyglet.clock.schedule_interval(self.update, 0.3)
         pyglet.app.run()
 
 
