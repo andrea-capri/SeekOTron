@@ -29,10 +29,6 @@ token_expressions = [
     (r'down',                  RESERVED),  # Move down keyword
     (r'left',                  RESERVED),  # Move left keyword
     (r'right',                 RESERVED),  # Move right keyword
-    (r'robot_x',               RESERVED),  # Keyword to fetch robot x coordinate
-    (r'robot_y',               RESERVED),  # Keyword to fetch robot y coordinate
-    (r'loot_x',                RESERVED),  # Keyword to fetch loot x coordinate
-    (r'loot_y',                RESERVED),  # Keyword to fetch loot y coordinate
     (r'and',                   RESERVED),  # Logical and
     (r'or',                    RESERVED),  # Logical for
     (r'not',                   RESERVED),  # Negation

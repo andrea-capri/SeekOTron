@@ -1,2 +1,9 @@
-down
-down
+i = 2
+if robot_x > 0 do
+    left
+else
+    right
+end
+for i do
+    down
+end
