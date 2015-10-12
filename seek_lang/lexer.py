@@ -9,14 +9,15 @@ ID = "ID"
 
 token_expressions = [
     (r'[ \t]+',                None),  # Whitespace
-    (r'\n',                    RESERVED),  # New line
+    (r'^[ \t]*$\n',            None),  # Blank lines
+    (r'\n',                    RESERVED),  # New line, can terminate statements
     (r'\(',                    RESERVED),  # Left bracket
     (r'\)',                    RESERVED),  # Right bracket
     (r'\+',                    RESERVED),  # Addition operator
     (r'-',                     RESERVED),  # Subtraction operator
     (r'\*',                    RESERVED),  # Multiplication operator
     (r'/',                     RESERVED),  # Division operation
-    (r';',                     RESERVED),  # End of expression
+    (r';',                     RESERVED),  # Statement terminator
     (r'<=',                    RESERVED),  # Less than or equal to operator
     (r'<',                     RESERVED),  # Less than operator
     (r'>=',                    RESERVED),  # Greater than or equal to operator
@@ -28,6 +29,10 @@ token_expressions = [
     (r'down',                  RESERVED),  # Move down keyword
     (r'left',                  RESERVED),  # Move left keyword
     (r'right',                 RESERVED),  # Move right keyword
+    (r'robot_x',               RESERVED),  # Keyword to fetch robot x coordinate
+    (r'robot_y',               RESERVED),  # Keyword to fetch robot y coordinate
+    (r'loot_x',                RESERVED),  # Keyword to fetch loot x coordinate
+    (r'loot_y',                RESERVED),  # Keyword to fetch loot y coordinate
     (r'and',                   RESERVED),  # Logical and
     (r'or',                    RESERVED),  # Logical for
     (r'not',                   RESERVED),  # Negation
@@ -49,7 +54,7 @@ def lex_internal(characters, token_expressinos):
         match = None
         for token_expression in token_expressinos:
             pattern, tag = token_expression
-            regex = re.compile(pattern)
+            regex = re.compile(pattern, re.MULTILINE)
             match = regex.match(characters, pos)
             if match:
                 text = match.group(0)

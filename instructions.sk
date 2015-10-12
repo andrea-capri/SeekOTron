@@ -1,3 +1,5 @@
-left
-down
-i = 2 + 1
+j = 2
+i = 1
+for i do
+    up
+end

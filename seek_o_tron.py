@@ -1,5 +1,6 @@
 import pyglet
-import game_state
+
+from game import game_state
 
 
 class SeekOTron:

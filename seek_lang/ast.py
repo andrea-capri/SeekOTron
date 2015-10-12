@@ -205,9 +205,6 @@ class MoveStatement(Statement):
         return 'MoveStatement(%s)' % (self.direction)
 
     def eval(self, env):
-        if 'movement_list' not in env:
-            env['movement_list'] = [self.direction]
-        else:
-            env['movement_list'].append(self.direction)
+        env['movement_list'].append(self.direction)
         print("Evaluating " + self.direction)
 
