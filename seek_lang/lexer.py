@@ -58,14 +58,14 @@ def lex_internal(characters, token_expressinos):
             match = regex.match(characters, pos)
             if match:
                 text = match.group(0)
-                print("Matched text: " + text + " against: " + pattern)
+                #print("Matched text: " + text + " against: " + pattern)
                 if tag:
                     token = (text, tag)
                     tokens.append(token)
                 break
         if not match:
-            sys.stderr.write('Illegal character: %s\\n' % characters[pos])
-            sys.exit(1)
+            sys.stderr.write('Illegal character: %s\n' % characters[pos])
+            return None
         else:
             pos = match.end(0)
     return tokens

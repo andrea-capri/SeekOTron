@@ -135,26 +135,26 @@ def stmt_list():
 
 def if_stmt():
     def process(parsed):
-        (((((_, condition), _), true_stmt), false_parsed), _) = parsed
+        ((((((_, condition), _), _), true_stmt), false_parsed), _) = parsed
         if false_parsed:
-            (_, false_stmt) = false_parsed
+            ((_, _), false_stmt) = false_parsed
         else:
             false_stmt = None
         return IfStatement(condition, true_stmt, false_stmt)
 
-    return keyword('if') + bexp() + \
-           keyword('do') + Lazy(stmt_list) + \
-           Opt(keyword('else') + Lazy(stmt_list)) + \
+    return keyword('if') + bexp() + keyword('do') + \
+           keyword('\n') + Lazy(stmt_list) + \
+           Opt(keyword('else') + keyword('\n') + Lazy(stmt_list)) + \
            keyword('end') ^ process
 
 
 def for_stmt():
     def process(parsed):
-        ((((_, condition), _), body), _) = parsed
+        (((((_, condition), _), _), body), _) = parsed
         return ForStatement(condition, body)
 
-    return keyword('for') + aexp() + \
-           keyword('do') + Lazy(stmt_list) + \
+    return keyword('for') + aexp() + keyword('do') + \
+           keyword('\n') + Lazy(stmt_list) + \
            keyword('end') ^ process
 
 

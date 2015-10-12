@@ -202,9 +202,7 @@ class MoveStatement(Statement):
         self.direction = direction
 
     def __repr__(self):
-        return 'MoveStatement(%s)' % (self.direction)
+        return 'MoveStatement(%s)' % self.direction
 
     def eval(self, env):
         env['movement_list'].append(self.direction)
-        print("Evaluating " + self.direction)
-

@@ -1,4 +1,6 @@
+import time
 import pyglet
+import seek_lang
 
 from game import game_state
 
@@ -6,6 +8,7 @@ from game import game_state
 class SeekOTron:
     BOARD_WIDTH = 3
     BOARD_HEIGHT = 3
+    MAX_MOVES = 10
 
     def __init__(self):
         self.game_state = game_state.GameState(self.BOARD_WIDTH, self.BOARD_HEIGHT)
@@ -33,6 +36,8 @@ class SeekOTron:
             self.game_state = game_state.GameState(self.BOARD_WIDTH, self.BOARD_HEIGHT)
         elif symbol == pyglet.window.key.Q:
             exit()
+        elif symbol == pyglet.window.key.SPACE:
+            self.process_movement()
         elif symbol == pyglet.window.key.K:
             self.key_input_enabled = not self.key_input_enabled
             if self.key_input_enabled:
@@ -52,6 +57,25 @@ class SeekOTron:
                 self.game_state.move_up()
             elif symbol == pyglet.window.key.DOWN:
                 self.game_state.move_down()
+
+    def process_movement(self):
+        moves = seek_lang.driver.evaluate_seek_lang(self.game_state.player_position, self.game_state.loot_position)
+        if not moves:  # fail if unable to parse
+            return
+        i = 0
+        for move in moves:
+            if move == "right":
+                self.game_state.move_right()
+            elif move == "left":
+                self.game_state.move_left()
+            elif move == "up":
+                self.game_state.move_up()
+            elif move == "down":
+                self.game_state.move_down()
+            i += 1
+            if i > self.MAX_MOVES:
+                print("Max moves (" + str(self.MAX_MOVES) + ") reached, stopping!")
+                break
 
     def draw_grid(self):
         # Draw horizontal lines
