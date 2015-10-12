@@ -1,4 +1,4 @@
-import time
+from __future__ import division
 import pyglet
 import seek_lang
 
