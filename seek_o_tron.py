@@ -185,7 +185,7 @@ class SeekOTron:
         if len(self.buffered_moves) == 0:
             self.processing_moves = False
             return
-        move = self.buffered_moves.pop()
+        move = self.buffered_moves.pop(0)
         if move == "right":
             self.game_state.move_right()
         elif move == "left":
