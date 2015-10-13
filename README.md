@@ -60,7 +60,7 @@ Seek lang supports simple arithmetic: addition, subtraction, multiplication, div
 
 Seek lang has simple variables: all variables have to be integers (and by default are 0). A variable is made up of a name, which has to start with a letter, and then can be any number of letters and numbers, and a value -  an integer, a number. To assign a variable I'd do something like this:
 
-```
+```python
 myVar = 5
 ```
 
@@ -68,7 +68,7 @@ Which would set the value of the variable `myVar` to 5.
 
 I could use arithmetic if I really wanted when setting `myVar`:
 
-```
+```python
 myVar = 2 + 3
 ```
 
@@ -93,7 +93,7 @@ Note, setting the values of these special variables won't change the robot or lo
 
 Seek lang has support for if statements that check on boolean expressions. That all means I can do something like this:
 
-```
+```python
 if myVar > 1 do
     up
 end
@@ -101,8 +101,7 @@ end
 
 Which says 'if the value of myVar is greater than 1 move the robot up'. That's kinda neat. We can also have stuff happen if condition is not true:
 
-
-```
+```python
 if myVar > 1 do
     up
 else
@@ -118,7 +117,7 @@ You can combine the special variables noted above with if statements to make som
 
 The last piece of Seek lang is the for statement (for loop). Seek lang has a really simple for loop, you tell it you want to do something a certain number of times, like this:
 
-```
+```python
 for 5 do
     up
 end
@@ -126,7 +125,7 @@ end
 
 Which will issue the up statement to the robot 5 times. Which is pretty neat. However, we can get even more exciting:
 
-```
+```python
 for myVar do
     left
 end
