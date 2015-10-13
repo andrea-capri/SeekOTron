@@ -4,8 +4,8 @@ SeekOTron is a game about programming a robot to collect loot.
 
 ## Requirements
 
-- [Python](https://www.python.org/) - SeekOTron should work in both Python 3 and Python 2. It is primarily tested in 3, but if there are issues with either let me know.
-- [Pyglet](https://bitbucket.org/pyglet/pyglet/wiki/Home) - You can install it using pip with the following command: `pip install pyglet`
+  [Python](https://www.python.org/)   SeekOTron should work in both Python 3 and Python 2. It is primarily tested in 3, but if there are issues with either let me know.
+  [Pyglet](https://bitbucket.org/pyglet/pyglet/wiki/Home)   You can install it using pip with the following command: `pip install pyglet`
 
 ## How to Play
 
@@ -21,10 +21,10 @@ Seek lang(guage) is a simple programming language created for telling the robot 
 
 Seek lang uses 4 different statements to tell the robot to move:
 
-- `right`
-- `left`
-- `up`
-- `down`
+  `right`
+  `left`
+  `up`
+  `down`
 
 Each of these tells the robot to move a single space in the grid in the appropriate direction. The robot can't walk through walls, so if told to do so, it will ignore that instruction.
 
@@ -52,13 +52,13 @@ Anywho! That's all there is to controlling the robot. You can solve puzzles with
 
 Note there a limit to how many commands that game will do before it stops, to stop you accidentally setting up tons of moves and having to wait ages for the friendly robot to follow them all through. Info on how to change this is in the Haxxing the Game section of this readme.
 
-#### Arithmatic expressions
+#### Arithmetic expressions
 
 Seek lang supports simple arithmetic: addition, subtraction, multiplication, division. Seek lang only uses integers, so be aware some rounding may take place behind the scenes.
 
 #### Variables
 
-Seek lang has simple variables: all variables have to be integers (and by default are 0). A variable is made up of a name, which has to start with a letter, and then can be any number of letters and numbers, and a value -- an integer, a number. To assign a variable I'd do something like this:
+Seek lang has simple variables: all variables have to be integers (and by default are 0). A variable is made up of a name, which has to start with a letter, and then can be any number of letters and numbers, and a value -  an integer, a number. To assign a variable I'd do something like this:
 
 ```
 myVar = 5
@@ -78,10 +78,10 @@ Being able to set variables will useful with a couple of the other structures in
 
 There are a few special variables in Seek lang. These variables come preloaded with certain special values. You can use them just like any other variable, but using the preloaded values in them can be useful for problem solving, these variables are:
 
-- `robot_x` is the x coordinate of the robot
-- `robot_y` is the y coordinate of the robot
-- `loot_x` is the x coordinate of the loot
-- `loot_y` is the y coordinate of the loot
+  `robot_x` is the x coordinate of the robot
+  `robot_y` is the y coordinate of the robot
+  `loot_x` is the x coordinate of the loot
+  `loot_y` is the y coordinate of the loot
 
 The values of these variables will be set as you evaluate a script (hit space bar), and may be different by the the space bar is next pressed.
 
@@ -142,21 +142,21 @@ That's it! Write your code in the `instructions.sk`, the game will look there fo
 
 ### Keyboard Commands
 
-- `q` quits the game
-- `space bar` loads and runs the code from instructions.sk
+  `q` quits the game
+  `space bar` loads and runs the code from instructions.sk
 
 ### Special Keyboard Commands
 
-- `d` prints to standard out simple game debug information
-- `k` toggles the use of the arrow keys to move the robot (off by default)
+  `d` prints to standard out simple game debug information
+  `k` toggles the use of the arrow keys to move the robot (off by default)
 
 ### Haxxing the game
 
 The seek_o_tron.py file contains the SeekOTron class, this class has a few special variables that control the game and can be tweaked:
 
-- `BOARD_WIDTH` sets the width of the board to be generated
-- `BOARD_HEIGHT` sets the height of the board to be generated
-- `MAX_MOVES` sets the max number of moves that will be processed before stopping
+  `BOARD_WIDTH` sets the width of the board to be generated
+  `BOARD_HEIGHT` sets the height of the board to be generated
+  `MAX_MOVES` sets the max number of moves that will be processed before stopping
 
 Width and height need not be the same.
 
