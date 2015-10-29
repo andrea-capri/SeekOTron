@@ -116,17 +116,17 @@ class SeekOTron:
         else:  # tiles are relatively taller, scale based on tile width
             scaling_coeff = square_size[0] / sprite.width
         sprite.scale = scaling_coeff - 0.01  # scale just a little smaller so image always fits
+
         # Position sprite
-        robot_square_x, robot_square_y = self.game_state.player_position
-        sprite_horizontal_buffer = (square_size[0] - sprite.width) // 2
-        sprite.x = robot_square_x * square_size[0] + sprite_horizontal_buffer
-        sprite_vertical_buffer = (square_size[1] - sprite.height) // 2
-        sprite.y = robot_square_y * square_size[1] + sprite_vertical_buffer
+        x, y = self.game_state.player_position
+        position_sprite(sprite, square_size, x, y)
+
         # Draw it
         sprite.draw()
 
     def draw_loot(self):
         sprite = pyglet.sprite.Sprite(self.loot_image)
+
         # Scale sprite
         loot_aspect_ratio = self.loot_image.width / self.loot_image.height
         square_size = self.get_square_size()
@@ -136,30 +136,35 @@ class SeekOTron:
         else:  # tiles are relatively taller, scale based on tile width
             scaling_coeff = square_size[0] / sprite.width
         sprite.scale = scaling_coeff - 0.01  # scale just a little smaller so image always fits
-        # Position sprite
-        loot_square_x, loot_square_y = self.game_state.loot_position
-        sprite_horizontal_buffer = (square_size[0] - sprite.width) // 2
-        sprite.x = loot_square_x * square_size[0] + sprite_horizontal_buffer
-        sprite_vertical_buffer = (square_size[1] - sprite.height) // 2
-        sprite.y = loot_square_y * square_size[1] + sprite_vertical_buffer
+
+        x, y = self.game_state.loot_position
+        position_sprite(sprite, square_size, x, y)
+
         # Draw it
         sprite.draw()
+
+    def position_sprite(self, sprite, square_size, x, y):
+        sprite_horizontal_buffer = (square_size[0] - sprite.width) // 2
+        sprite.x = x * square_size[0] + sprite_horizontal_buffer
+        sprite_vertical_buffer = (square_size[1] - sprite.height) // 2
+        sprite.y = y * square_size[1] + sprite_vertical_buffer
 
     def draw_moving_banner(self):
         sprite = pyglet.sprite.Sprite(self.moving_banner_image)
         # Scale sprite
+
         banner_aspect_ratio = self.win_banner_image.width / self.win_banner_image.height
         window_aspect = self.window.get_size()[0] / self.window.get_size()[1]
+
         if window_aspect > banner_aspect_ratio:  # window is relatively wider, scale based on window height
             scaling_coeff = self.window.get_size()[1] / sprite.height
         else:  # window is relatively taller, scale based on window width
             scaling_coeff = self.window.get_size()[0] / sprite.width
         sprite.scale = scaling_coeff - 0.01  # scale just a little smaller so image always fits
+
         # Position sprite
-        sprite_horizontal_buffer = (self.window.get_size()[0] - sprite.width) // 2
-        sprite.x = sprite_horizontal_buffer
-        sprite_vertical_buffer = (self.window.get_size()[1] - sprite.height) // 2
-        sprite.y = sprite_vertical_buffer
+        position_banner()
+
         # Draw it
         sprite.draw()
 
@@ -173,13 +178,18 @@ class SeekOTron:
         else:  # window is relatively taller, scale based on window width
             scaling_coeff = self.window.get_size()[0] / sprite.width
         sprite.scale = scaling_coeff - 0.01  # scale just a little smaller so image always fits
+
         # Position sprite
+        position_banner()
+
+        # Draw it
+        sprite.draw()
+
+    def position_banner():
         sprite_horizontal_buffer = (self.window.get_size()[0] - sprite.width) // 2
         sprite.x = sprite_horizontal_buffer
         sprite_vertical_buffer = (self.window.get_size()[1] - sprite.height) // 2
         sprite.y = sprite_vertical_buffer
-        # Draw it
-        sprite.draw()
 
     def process_move(self):
         if len(self.buffered_moves) == 0:
